@@ -1,16 +1,16 @@
 package br.com.estudo.forum.exception
 
 import br.com.estudo.forum.dto.ErrorView
-import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import java.lang.Exception
+import javax.servlet.http.HttpServletRequest
 
 @RestControllerAdvice
-class ExceptionHander {
+class ExceptionHandler {
 
     @ExceptionHandler(NotFoundException::class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -28,12 +28,14 @@ class ExceptionHander {
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    fun handleValidantionError(
+    fun handleValidationError(
         exception: MethodArgumentNotValidException,
         request: HttpServletRequest
     ): ErrorView {
-        val errorMessage = HashMap<String, String?> ()
-        exception.bindingResult.fieldErrors.forEach { e -> errorMessage.put(e.field, e.defaultMessage) }
+        val errorMessage = HashMap<String, String?>()
+        exception.bindingResult.fieldErrors.forEach{
+                e -> errorMessage.put(e.field, e.defaultMessage)
+        }
         return ErrorView(
             status = HttpStatus.BAD_REQUEST.value(),
             error = HttpStatus.BAD_REQUEST.name,

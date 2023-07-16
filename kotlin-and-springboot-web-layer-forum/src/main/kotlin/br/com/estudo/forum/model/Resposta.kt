@@ -1,12 +1,17 @@
 package br.com.estudo.forum.model
 
-import java.time.LocalDate
+import java.time.LocalDateTime
+import javax.persistence.*
 
-data class Resposta (
+@Entity
+data class Resposta(
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
     val mensagem: String,
-    val dataCriacao: LocalDate = LocalDate.now(),
-    val topico: Topico,
+    val dataCriacao: LocalDateTime = LocalDateTime.now(),
+    @ManyToOne
     val autor: Usuario,
-    val solucao: Boolean = false
+    @ManyToOne
+    val topico: Topico,
+    val solucao: Boolean
 )
